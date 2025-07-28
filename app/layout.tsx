@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
+
+import {  Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import AppSidebar from "./(routes)/(root)/components/AppSidebar/AppSidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Navbar } from "@/components/shared";
+import Footer from "@/components/shared/Footer/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+
+const spaceGrotesk = Space_Grotesk({
+
+  variable:"--font-space-grotesk",
   subsets: ["latin"],
-});
+
+}
+
+)
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,12 +32,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+     <ClerkProvider>
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${spaceGrotesk.className}  antialiased`}
+      > 
+       <SidebarProvider>
+      <AppSidebar />
+      <div className="w-full bg-stone-100 flex flex-col min-h-screen">
+        <Navbar/>
+
+      
+        <main className="flex-1/2"> {children}</main>
+        <Toaster/>
+        <Footer/>
+
+        </div>
+
+        </SidebarProvider>
+        
       </body>
     </html>
+    </ClerkProvider>
   );
 }
